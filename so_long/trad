@@ -1,0 +1,19 @@
+L'une des façons préférées de dessiner des choses sur une fenêtre est d'utiliser des images. 
+L'objectif est de créer une image (qui n'est rien d'autre qu'une collection de pixels) 
+et d'éditer ses pixels directement. Une fois cela fait, nous placerons cette image sur 
+la fenêtre et nous devrions obtenir notre graphique correctement rendu sans aucun problème 
+de scintillement.
+
+Eh bien, les images sont un sujet vaste et complexe, nous ne rentrerons donc pas dans les détails de leur implémentation par la minilibx.
+
+Cependant, il est intéressant de noter que la minilibx utilise l'extension Xshm, ce qui permet à 
+notre programme de partager des images avec le serveur X via la mémoire partagée (/dev/shm) et non par 
+le socket comme c'est le cas lors de l'utilisation de toute routine Xlib.
+
+Souvenez-vous comment nous appelions continuellement mlx_pixel_put pour placer nos pixels sur la fenêtre. 
+Avec des images partagées en mémoire, nous pourrons modifier les pixels directement à l'aide d'un pointeur. 
+Pour être clair, c'est beaucoup plus rapide, et c'est pourquoi nous voulons l'utiliser !
+
+Heureusement, la minilibx nous offre une manière vraiment simple de gérer les images.
+
+
