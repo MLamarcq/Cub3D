@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 17:15:08 by ggosse            #+#    #+#             */
-/*   Updated: 2023/07/30 19:08:26 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/02 13:00:11 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3D.h"
-
-void	print_map(char **arr)
-{
-	int	i_big;
-	int	i_lil;
-
-	i_big = -1;
-	i_lil = -1;
-	while (arr[++i_big])
-	{
-		i_lil = -1;
-		while (arr[i_big][++i_lil])
-		{
-			if (arr[i_big][i_lil] == ' ')
-				printf(BACK_BLACK"--"RESET);
-			else if (arr[i_big][i_lil] == '0')
-				printf(BACK_WHITE"  "RESET);
-			else if (arr[i_big][i_lil] == '1')
-				printf(BACK_YELLOW"  "RESET);
-			else if (arr[i_big][i_lil] == 'N' || arr[i_big][i_lil] == 'E'
-				|| arr[i_big][i_lil] == 'S' || arr[i_big][i_lil] == 'W')
-				printf(BACK_RED"  "RESET);
-		}
-		printf("\n");
-	}
-}
 
 void	init_struct(t_game *game)
 {
@@ -82,9 +56,11 @@ int	ft_parsing(t_game *game, char **argv)
 		return (FAIL);
 	if (build_map(game, argv) == FAIL)
 		return (FAIL);
-	if (check_perso(game) == FAIL)
+	if (xpm_parse(game) == FAIL)
 		return (FAIL);
 	if (check_letters_map(game) == FAIL)
+		return (FAIL);
+	if (check_perso(game) == FAIL)
 		return (FAIL);
 	while (is_propa_finished(game) == FAIL)
 	{
@@ -94,12 +70,20 @@ int	ft_parsing(t_game *game, char **argv)
 	if (hole_in_wall(game) == FAIL)
 		return (FAIL);
 	check_corner(game);
-	if (xpm_parse(game) == FAIL)
-		return (FAIL);
-
-	// print_map(game->map->map_tmp);
-	// print_map(game->map->map_org);
 	return (SUCCESS);
+}
+
+void	init_main(t_game *game)
+{
+	game->mlibx = NULL;
+	game->window = NULL;
+	game->map = NULL;
+	game->img = NULL;
+	game->xpm = NULL;
+	game->line = NULL;
+	game->fov = NULL;
+	game->line_3d = NULL;
+	game->temp = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -110,20 +94,16 @@ int	main(int argc, char **argv, char **envp)
 		return (ft_putstr_fd("Error\nyou must have env. variables\n", 2), 1);
 	if (argc != 2)
 		return (ft_putstr_fd("Error\nyou must called one arg\n", 2), 1);
+	init_main(&game);
 	game.map = malloc(sizeof(t_map));
 	if (!game.map)
 		return (printf("game map alloc failed\n"), FAIL);
 	init_struct(&game);
 	if (ft_parsing(&game, argv) == FAIL)
-		return (FAIL);
-	// if (start_3D(&game) == FAIL)
-	// 	return (FAIL);
-
-	// ft_create_game(&game);
+		return (free_all(&game), FAIL);
+	if (start_3D(&game) == FAIL)
+		return ( FAIL);
 	free_all(&game);
-	//free_parsing(&game, NULL);
-	(void)game;
-	(void)argc;
 	(void)argv;
 	(void)envp;
 	return (0);
