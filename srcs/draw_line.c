@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 16:34:58 by mael              #+#    #+#             */
-/*   Updated: 2023/08/02 14:26:21 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/02 21:28:02 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	init_line(t_game *game)
 	game->line->x_dest = 0;
 	game->line->y_dest = 0;
 	game->line->x_dest_prev = 0;
-	game->line->y_dest_prev = 0;
+	game->line->check_x = 0;
+	game->line->check_y = 0;
+	game->line->new_x = 0;
+	game->line->new_y = 0;
 	return (SUCCESS);
 }
 int	draw_pixel(t_game *game, int toggle, int color)

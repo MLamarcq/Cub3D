@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:45:40 by ggosse            #+#    #+#             */
-/*   Updated: 2023/08/02 14:26:24 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 09:51:15 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,10 @@ typedef struct s_line
 	int		y_dest;
 	int		x_dest_prev;
 	int		y_dest_prev;
+	int		check_x;
+	int		check_y;
+	int		new_x;
+	int		new_y;
 }	t_line;
 
 typedef struct s_temp
@@ -370,6 +374,11 @@ int		draw_xpm_up_no_color(t_game *game, int x, int y);
 //srcs/draw_xpm_down_so.c
 void	draw_xpm_down_so(t_game *game, int i_midline);
 int		draw_xpm_so_color(t_game *game, int x, int y);
+//srcs/key_tools.c
+int		calcul_step_for_key_a(t_game *game);
+int		calcul_step_for_key_d(t_game *game);
+void	check_for_wall_a(t_game *game);
+void	check_for_wall_d(t_game *game);
 //srcs/draw_xpm_up_ea.c
 void	draw_xpm_up_ea(t_game *game, int i_midline);
 int		draw_xpm_up_ea_color(t_game *game, int x, int y);
@@ -416,6 +425,11 @@ int		xpm_ea_copy_tab(t_game *game, char **tmp);
 int		xpm_ea_correct(t_game *g);
 int		xpm_ea_read_1line(t_game *game);
 int		xpm_ea_wo_comm(t_game *g, int n_comm);
+//srcs/key_move.c
+int		key_is_a(t_game *game, int key);
+int		key_is_d(t_game *game, int key);
+void	key_is_s(t_game *game, int key);
+void	key_is_w(t_game *g, int key);
 //srcs/display_all.c
 int		display_all(t_game *game, int key);
 void	last_correct_toggle(t_game *game);
@@ -438,6 +452,9 @@ void	move_s(t_game *game);
 void	move_w(t_game *game);
 //srcs/rotate.c
 void	t(void);
+//srcs/key_rotate.c
+void	key_rotate_left(t_game *game, int key);
+void	key_rotate_right(t_game *game, int key);
 //srcs/xpm_common.c
 int		init_xpm(t_game *game);
 int		is_space(char chr);
@@ -473,7 +490,7 @@ void	i_draw_red(t_game *game, int i_midline);
 int		check_ceil(t_game *game, char *line, char *color);
 int		check_ceil_content(t_game *game, char **color);
 int		check_floor(t_game *game, char *line, char *color);
-int		check_floor_content(t_game *game, char **color);
+int		check_floor_content(t_game *g, char **color);
 int		floor_ceil_part(t_game *game, char *line);
 //srcs/texture_part.c
 int		check_ea(t_game *game, char *line);
@@ -492,13 +509,10 @@ int		propagation(t_game *game, int row, int col, int count);
 int		xpm_so_init_color(t_game *game, char **line);
 char	*xpm_so_keep_metadata(char **tmp, int i_tmp);
 //srcs/fov.c
-int		calcul_opposite_side(t_game *game, double angle);
-int		first_calcul(t_game *game, double angle);
 int		init_fov(t_game *game);
 int		init_fov_wall(t_game *game);
 int		init_fov_wall_witch(t_game *game);
 void	init_position(t_game *game);
-int		second_calcul(t_game *game, double angle);
 //srcs/free_xpm.c
 void	free_xpm(t_game *game);
 void	free_xpm_ea(t_game *game);

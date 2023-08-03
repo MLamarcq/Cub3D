@@ -70,6 +70,9 @@ _SRCS	=	build_map.c \
 			free_parsing.c \
 			free_xpm.c \
 			init_img.c \
+			key_move.c \
+			key_rotate.c \
+			key_tools.c \
 			main.c \
 			move_w_s.c \
 			pixel_and_color.c \
