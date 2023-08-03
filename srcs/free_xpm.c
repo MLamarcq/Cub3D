@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_xpm.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:57:52 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 11:27:27 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:10:31 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,14 @@ void	free_xpm_no(t_game *game)
 {
 	int	i;
 
-	i = 0;
-	while (i < game->xpm->no_tab_start)
+	i = -1;
+	while (++i < game->xpm->no_tab_start)
 	{
 		if (game->xpm->no_colors[i])
 		{
 			free(game->xpm->no_colors[i]);
 			game->xpm->no_colors[i] = NULL;
 		}
-		i++;
 	}
 	if (game->xpm->no_colors)
 	{

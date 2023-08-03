@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:17:16 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 20:34:20 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 10:40:42 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	display_3d_up(t_game *game)
 
 void	display_3d_up_red(t_game *game, int i_main)
 {
-	int i_midline;
+	int	i_midline;
 	int	i_ratio;
 
 	i_ratio = 0;
@@ -70,7 +70,7 @@ void	display_3d_up_red(t_game *game, int i_main)
 		while (i_ratio < 2)
 		{
 			draw_line_3d_up(game, i_main, i_midline);
-			i_draw_red(game, i_midline);
+			i_draw_up_red(game, i_midline);
 			i_ratio++;
 			i_main++;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cub3D_2.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 11:38:30 by mael              #+#    #+#             */
-/*   Updated: 2023/06/28 08:00:35 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:31:27 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,8 @@ char	*ft_strdup_len(char *str, int start, int end);
 //srcs/init_img.c
 int		create_image_and_get_adrr(t_game *game);
 int		init_img(t_game *game);
-//srcs/start_3D.c
-int		start_3D(t_game *game);
+//srcs/start_3d.c
+int		start_3d(t_game *game);
 //srcs/main.c
 int		build_map(t_game *game, char **argv);
 int		ft_parsing(t_game *game, char **argv);

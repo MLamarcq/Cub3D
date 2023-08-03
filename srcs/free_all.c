@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 15:05:22 by mael              #+#    #+#             */
-/*   Updated: 2023/08/02 20:40:44 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:08:43 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	free_ceil_floor(t_game *game)
 
 void	free_fov(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i <= game->fov->nbr_ray)

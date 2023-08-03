@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 15:45:40 by ggosse            #+#    #+#             */
-/*   Updated: 2023/08/03 09:51:15 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:41:35 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,28 @@ typedef struct s_xpm
 	char	*no_file_map;
 	char	**no_tab_file;
 	int		**no_colors;
+	int		*no_metadata;
 	int		no_width_height;
 	int		no_tab_start;
 	char	*ea_file_content;
 	char	*ea_file_map;
 	char	**ea_tab_file;
 	int		**ea_colors;
+	int		*ea_metadata;
 	int		ea_width_height;
 	int		ea_tab_start;
 	char	*we_file_content;
 	char	*we_file_map;
 	char	**we_tab_file;
 	int		**we_colors;
+	int		*we_metadata;
 	int		we_width_height;
 	int		we_tab_start;
 	char	*so_file_content;
 	char	*so_file_map;
 	char	**so_tab_file;
 	int		**so_colors;
+	int		*so_metadata;
 	int		so_width_height;
 	int		so_tab_start;
 }	t_xpm;
@@ -321,19 +325,20 @@ void	draw_player(t_game *game);
 int		ft_event_listen(int key, t_game *game);
 void	set_pos_character(t_game *game);
 //srcs/start_3D.c
-void	color_image(t_game *game);
-void	do_quad(t_game *game, int i, int j);
-void	fill_void(t_game *game, int i, int j);
-void	fill_wall(t_game *game, int i, int j);
 int		first_time(t_game *game);
 void	reset_img(t_game *game);
-int		start_3D(t_game *game);
+int		start_3d(t_game *game);
 //srcs/tools.c
 double abs_dble(double nb);
 double abs_flt(double nb);
 int		absolute_value(int nb);
 double deg_to_radian(double deg);
 int		hex_to_dec(char *hexa);
+//srcs/color_image.c
+void	color_image(t_game *game);
+void	do_quad(t_game *game, int i, int j);
+void	fill_void(t_game *game, int i, int j);
+void	fill_wall(t_game *game, int i, int j);
 //srcs/main.c
 int		ft_parsing(t_game *game, char **argv);
 void	init_struct(t_game *game);
@@ -368,6 +373,9 @@ int		xpm_no_split_buf(int fd, t_game *game);
 //srcs/pixel_and_color.c
 int		get_color(int red, int green, int blue);
 void	img_pix_put(t_game *game, int x, int y, int color);
+//srcs/xpm_we_dual.c
+int		xpm_we_check_dual_color(t_game *g, int *i_chr, int i_tab_file, int i_color);
+int		xpm_we_dual_letters(t_game *g, int i_chr, int i_tab_file, int i_color, char **line);
 //srcs/draw_xpm_up_no.c
 void	draw_xpm_up_no(t_game *game, int i_midline);
 int		draw_xpm_up_no_color(t_game *game, int x, int y);
@@ -392,9 +400,9 @@ int		xpm_so_parse(t_game *game);
 int		xpm_so_read(t_game *game, char *filename);
 int		xpm_so_split_buf(int fd, t_game *game);
 //srcs/xpm_no_colors.c
-void	xpm_no_hex_to_dec(t_game *g, int i_color, int i_tab_file);
+int		xpm_no_check_line_color(t_game *g, int *i_chr, int i_tab_file, int i_color);
+int		xpm_no_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr);
 int		xpm_no_letter_color(t_game *game, int i_color, int i_tab_file);
-int		xpm_no_read_1line(t_game *game);
 int		xpm_no_set_color(t_game *game, int i_color, char *tmp);
 int		xpm_no_set_len_n_color(t_game *g, char **line);
 //srcs/xpm_we_utils.c
@@ -415,9 +423,9 @@ void	free_parsing(t_game *game, char *err);
 void	free_tab_str(char **tab_str);
 void	free_wall(t_game *game);
 //srcs/xpm_we_colors.c
-void	xpm_we_hex_to_dec(t_game *g, int i_color, int i_tab_file);
+int		xpm_we_check_line_color(t_game *g, int *i_chr, int i_tab_file, int i_color);
+int		xpm_we_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr);
 int		xpm_we_letter_color(t_game *game, int i_color, int i_tab_file);
-int		xpm_we_read_1line(t_game *game);
 int		xpm_we_set_color(t_game *game, int i_color, char *tmp);
 int		xpm_we_set_len_n_color(t_game *g, char **line);
 //srcs/xpm_ea_correction.c
@@ -443,6 +451,7 @@ char	*xpm_no_keep_metadata(char **tmp, int i_tmp);
 //srcs/xpm_we_correction.c
 int		xpm_we_copy_tab(t_game *game, char **tmp);
 int		xpm_we_correct(t_game *g);
+int		xpm_we_read_1line(t_game *game);
 int		xpm_we_wo_comm(t_game *g, int n_comm);
 //srcs/move_w_s.c
 int		calcul_corr_for_step(t_game *game);
@@ -450,17 +459,17 @@ void	init_direction_for_s(t_game *game);
 void	init_direction_for_s_2(t_game *game);
 void	move_s(t_game *game);
 void	move_w(t_game *game);
-//srcs/rotate.c
-void	t(void);
 //srcs/key_rotate.c
 void	key_rotate_left(t_game *game, int key);
 void	key_rotate_right(t_game *game, int key);
 //srcs/xpm_common.c
+void	init_second_xpm(t_game *game);
 int		init_xpm(t_game *game);
 int		is_space(char chr);
 int		xpm_parse(t_game *game);
 //srcs/xpm_so_colors.c
-void	xpm_so_hex_to_dec(t_game *g, int i_color, int i_tab_file);
+int		xpm_so_check_line_color(t_game *g, int *i_chr, int i_tab_file, int i_color);
+int		xpm_so_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr);
 int		xpm_so_letter_color(t_game *game, int i_color, int i_tab_file);
 int		xpm_so_set_color(t_game *game, int i_color, char *tmp);
 int		xpm_so_set_len_n_color(t_game *g, char **line);
@@ -522,6 +531,7 @@ void	free_xpm_we(t_game *game);
 //srcs/xpm_no_correction.c
 int		xpm_no_copy_tab(t_game *game, char **tmp);
 int		xpm_no_correct(t_game *g);
+int		xpm_no_read_1line(t_game *game);
 int		xpm_no_wo_comm(t_game *g, int n_comm);
 //srcs/free_all.c
 int		free_all(t_game *game);
@@ -536,8 +546,8 @@ int		xpm_so_wo_comm(t_game *g, int n_comm);
 void	draw_xpm_down_ea(t_game *game, int i_midline);
 int		draw_xpm_ea_color(t_game *game, int x, int y);
 //srcs/xpm_ea_colors.c
-int		xpm_ea_check_line_color(t_game *g, int *i_chr, int i_tab_file);
-void	xpm_ea_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr);
+int		xpm_ea_check_line_color(t_game *g, int *i_chr, int i_tab_file, int i_color);
+int		xpm_ea_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr);
 int		xpm_ea_letter_color(t_game *game, int i_color, int i_tab_file);
 int		xpm_ea_set_color(t_game *game, int i_color, char *tmp);
 int		xpm_ea_set_len_n_color(t_game *g, char **line);
@@ -555,11 +565,13 @@ int		xpm_ea_get_content_xpm(t_game *game, int fd, int ret, char *buf);
 int		xpm_ea_parse(t_game *game);
 int		xpm_ea_read(t_game *game, char *filename);
 int		xpm_ea_split_buf(int fd, t_game *game);
+//srcs/angle_len.c
+void	angle_1(t_game *game, double angle_2, int len_vision);
+void	angle_3(t_game *game, double angle_2, int len_vision);
+void	angle_4(t_game *game, double angle_2, int len_vision);
 //srcs/display_all_utils.c
 int		init_display_all(t_game *game, int key, int *len_side);
 void	move_straight(t_game *game);
 void	rotate_new(t_game *game);
-//test.c
-float rounded(float flt);
 
 #endif

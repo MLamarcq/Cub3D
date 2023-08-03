@@ -6,7 +6,7 @@
 /*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:30:48 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 13:27:49 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/03 01:56:05 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,23 @@ int	xpm_ea_set_color(t_game *game, int i_color, char *tmp)
 	return (SUCCESS);
 }
 
-void	xpm_ea_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr)
+int	xpm_ea_hex_to_dec(t_game *g, int i_color, int i_tab_file, int i_chr)
 {
-	g->xpm->ea_colors[i_color][1] = \
-	hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
-	i_chr + 1, i_chr + 3));
-	g->xpm->ea_colors[i_color][2] = \
-	hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
-	i_chr + 3, i_chr + 5));
-	g->xpm->ea_colors[i_color][3] = \
-	hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
-	i_chr + 5, i_chr + 7));
+	if (g->xpm->ea_tab_file[i_tab_file][i_chr] == '#')
+	{
+		g->xpm->ea_colors[i_color][1] = \
+		hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
+		i_chr + 1, i_chr + 3));
+		g->xpm->ea_colors[i_color][2] = \
+		hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
+		i_chr + 3, i_chr + 5));
+		g->xpm->ea_colors[i_color][3] = \
+		hex_to_dec(ft_strdup_len(g->xpm->ea_tab_file[i_tab_file], \
+		i_chr + 5, i_chr + 7));
+	}
+	else if (xpm_ea_letter_color(g, i_color, i_tab_file) == FAIL)
+		return (FAIL);
+	return (SUCCESS);
 }
 
 int	xpm_ea_set_len_n_color(t_game *g, char **line)
@@ -82,32 +88,27 @@ int	xpm_ea_set_len_n_color(t_game *g, char **line)
 	int	i_chr;
 
 	i_chr = 1;
-	i_tab_file = 1;
-	i_color = 0;
-	if (ft_atoi(line[2]) > 96)
-		return (printf("Too much colors\n"), FAIL);
-	if (xpm_ea_init_color(g, line) == FAIL)
-		return (FAIL);
-	while (i_color < ft_atoi(line[2]))
+	i_tab_file = 0;
+	i_color = -1;
+	if (ft_atoi(line[2]) <= 92)
 	{
-		i_chr = 1;
-		if (xpm_ea_check_line_color(g, &i_chr, i_tab_file) == FAIL)
+		if (xpm_ea_init_color(g, line) == FAIL)
 			return (FAIL);
-		g->xpm->ea_colors[i_color] = malloc(sizeof(int) * (4));
-		if (!g->xpm->ea_colors[i_color])
-			return (FAIL);
-		g->xpm->ea_colors[i_color][0] = g->xpm->ea_tab_file[i_tab_file][0];
-		if (g->xpm->ea_tab_file[i_tab_file][i_chr] == '#')
-			xpm_ea_hex_to_dec(g, i_color, i_tab_file, i_chr);
-		else if (xpm_ea_letter_color(g, i_color, i_tab_file) == FAIL)
-			return (FAIL);
-		i_tab_file++;
-		i_color++;
+		while (++i_color < ft_atoi(line[2]))
+		{
+			i_chr = 1;
+			if (xpm_ea_check_line_color(g, &i_chr, ++i_tab_file, i_color) == FAIL)
+				return (FAIL);
+			if (xpm_ea_hex_to_dec(g, i_color, i_tab_file, i_chr) == FAIL)
+				return (FAIL);
+		}
 	}
+	// else if (xpm_ea_dual_letters(game) == FAIL)
+	// 	return (FAIL);
 	return (SUCCESS);
 }
 
-int	xpm_ea_check_line_color(t_game *g, int *i_chr, int i_tab_file)
+int	xpm_ea_check_line_color(t_game *g, int *i_chr, int i_tab_file, int i_color)
 {
 	if (is_space(g->xpm->ea_tab_file[i_tab_file][(*i_chr)]) == FAIL)
 		return (printf("something wrong xpm files\n"), FAIL);
@@ -120,5 +121,9 @@ int	xpm_ea_check_line_color(t_game *g, int *i_chr, int i_tab_file)
 		return (printf("something wrong xpm files\n"), FAIL);
 	while (is_space(g->xpm->ea_tab_file[i_tab_file][(*i_chr)]) == SUCCESS)
 		(*i_chr)++;
+	g->xpm->ea_colors[i_color] = malloc(sizeof(int) * (4));
+	if (!g->xpm->ea_colors[i_color])
+		return (FAIL);
+	g->xpm->ea_colors[i_color][0] = g->xpm->ea_tab_file[i_tab_file][0];
 	return (SUCCESS);
 }

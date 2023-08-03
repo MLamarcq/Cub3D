@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_CUB3d_2.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 19:58:40 by mael              #+#    #+#             */
-/*   Updated: 2023/07/14 12:22:54 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/03 11:31:27 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,14 +165,14 @@ void	set_pos_character(t_game *game);
 //srcs/toggle.c
 void	change_toggle_a(t_game *game);
 void	change_toggle_d(t_game *game);
-//srcs/start_3D.c
+//srcs/start_3d.c
 void	color_image(t_game *game);
 void	do_quad(t_game *game, int i, int j);
 void	fill_void(t_game *game, int i, int j);
 void	fill_wall(t_game *game, int i, int j);
 int		first_time(t_game *game);
 void	reset_img(t_game *game);
-int		start_3D(t_game *game);
+int		start_3d(t_game *game);
 //srcs/main.c
 int		ft_parsing(t_game *game, char **argv);
 void	init_struct(t_game *game);

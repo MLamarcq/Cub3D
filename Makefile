@@ -2,6 +2,7 @@
 
 
 
+
 ##### Colors #####
 BLACK=\033[0;30m
 RED=\033[0;31m
@@ -12,6 +13,7 @@ PURPLE=\033[0;35m
 CYAN=\033[0;36m
 WHITE=\033[0;37m
 END=\033[0m
+
 
 
 
@@ -29,6 +31,7 @@ BOLD_WHITE=\033[1;37m
 
 
 
+
 ##### Names #####
 NAME	= cub3D
 LIBNAME	= libft.a
@@ -42,11 +45,14 @@ LIBDIR	= libft
 
 
 
+
 # ----------------------------------- srcs ----------------------------------- #
-_SRCS	=	build_map.c \
+_SRCS	=	angle_len.c \
+			build_map.c \
 			build_map_utils.c \
 			check_file.c \
 			check_format.c \
+			color_image.c \
 			display_3d_down.c \
 			display_3d_down_utils.c \
 			display_3d_up.c \
@@ -78,7 +84,6 @@ _SRCS	=	build_map.c \
 			pixel_and_color.c \
 			player.c \
 			read_file.c \
-			rotate.c \
 			start_3D.c \
 			texture_part.c \
 			texture_part_utils.c \
@@ -87,21 +92,26 @@ _SRCS	=	build_map.c \
 			xpm_common.c \
 			xpm_ea_colors.c \
 			xpm_ea_correction.c \
+			xpm_ea_dual.c \
 			xpm_ea_parse.c \
 			xpm_ea_utils.c \
 			xpm_no_colors.c \
 			xpm_no_correction.c \
+			xpm_no_dual.c \
 			xpm_no_parse.c \
 			xpm_no_utils.c \
 			xpm_so_colors.c \
 			xpm_so_correction.c \
+			xpm_so_dual.c \
 			xpm_so_parse.c \
 			xpm_so_utils.c \
 			xpm_we_colors.c \
 			xpm_we_correction.c \
+			xpm_we_dual.c \
 			xpm_we_parse.c \
 			xpm_we_utils.c
 # --------------------------------- end srcs --------------------------------- #
+
 
 
 
@@ -111,6 +121,7 @@ OBJ            = $(SRC:$(SRCDIR)%.c=$(OBJDIR)%.o)
 HEADER         = $(addprefix $(INCDIR)/, $(NAME).h)
 LIBX           = -L minilibx/ 
 LIBXFLAGS      = -lmlx -lXext -lX11 -lz -lm
+
 
 
 
@@ -154,6 +165,8 @@ fclean: clean
 re: fclean all
 
 -include ${DEPS}
+
+
 
 
 
