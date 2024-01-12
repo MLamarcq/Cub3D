@@ -6,7 +6,7 @@
 /*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 19:28:51 by ggosse            #+#    #+#             */
-/*   Updated: 2023/07/31 16:37:16 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/07 01:06:14 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # include <readline/history.h>
 
 // ------------------------------ include ----------------------------------- //
-#include "../incs/color.h"
+# include "../incs/color.h"
 // ---------------------------- end include --------------------------------- //
 
 // ------------------------------ define ------------------------------------ //
@@ -55,6 +55,8 @@ typedef struct s_list
 //ft_bzero.c
 void	ft_bzero(void *str, size_t n);
 //ft_toupper.c
+char	*ft_str_to_up(char *str);
+char	*ft_str_to_upf(char *str);
 int		ft_toupper(int chr);
 //ft_substr.c
 char	*ft_substr(char const *s, unsigned int start, size_t len);
@@ -84,8 +86,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 //ft_putchar_fd.c
 int		ft_putchar_fd(char c, int fd);
 //ft_strlen.c
-size_t ft_strlen(const char *str);
-size_t ft_tablen(char **tab);
+size_t	ft_strlen(const char *str);
+size_t	ft_tablen(char **tab);
 //ft_lstclear_bonus.c
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 //ft_lstdelone_bonus.c
@@ -110,7 +112,7 @@ int		ft_strncmp(const char *first, const char *second, size_t length);
 //ft_isascii.c
 int		ft_isascii(int c);
 //ft_strlcpy.c
-size_t ft_strlcpy(char *dst, const char *src, size_t size);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 //ft_putstr_fd.c
 int		ft_putstr_fd(char *s, int fd);
 //ft_putunbr.c
@@ -127,6 +129,8 @@ char	*ft_strrchr(const char *str, int search);
 //ft_memcmp.c
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 //ft_tolower.c
+char	*ft_str_to_low(char *str);
+char	*ft_str_to_lowf(char *str);
 int		ft_tolower(int chr);
 //ft_isprint.c
 int		ft_isprint(int c);
@@ -158,7 +162,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 //ft_putnbr_base_up.c
 int		ft_putnbr_base_up(unsigned long long int nbr);
 //ft_strlcat.c
-size_t ft_strlcat(char *dst, const char *src, size_t size);
+size_t	ft_strlcat(char *dst, const char *src, size_t size);
 //ft_strmapi.c
 char	*ft_strmapi(const char *str, char (*f)(unsigned int, char));
 

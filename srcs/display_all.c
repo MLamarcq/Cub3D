@@ -3,252 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   display_all.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:04:13 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 13:53:20 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 15:47:18 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	display_all(t_game *game, int key)
+int	display_all(t_game *g, int key)
 {
-	// printf("\033c");
-	int len_side;
-	int i_rotate;
-	int save;
-	int save_2;
+	int	len_side;
+	int	i_rotate;
+	int	len_vision;
 
-	i_rotate = 0;
-	if (init_display_all(game, key, &len_side) == FAIL)
-		return (FAIL);
-
-	move_straight(game);
-	rotate_new(game);
-	printf(BACK_YELLOW"game->fov->toggle: %c"RST"\n", game->fov->toggle);
-	printf(YELLOW"(%i, %i)"RST"\n", game->line->x_dest, game->line->y_dest);
-	printf(BOLD_YELLOW"game->fov->angle: %i"RST"\n", game->fov->angle);
-	printf("\n");
-	printf(BLUE"(%i, %i)"RST"\n", game->line->x_dest, game->line->y_dest);
-	game->fov->lines_vision[game->fov->nbr_ray / 2] = draw_line_vision(game, get_color(0, 255, 0));
-	game->fov->wall_witch[game->fov->nbr_ray / 2][0] = game->line->corr_x;
-	game->fov->wall_witch[game->fov->nbr_ray / 2][1] = game->line->corr_y;
-	game->fov->wall[game->fov->nbr_ray / 2][0] = game->line->corr_x / game->img_size;
-	game->fov->wall[game->fov->nbr_ray / 2][1] = game->line->corr_y / game->img_size;
-	double	angle;
-	int		len_vision;
-	int		save_x;
-	int		save_y;
-
-	save_x = game->line->x_dest;
-	save_y = game->line->y_dest;
-	angle = game->fov->angle;
 	len_vision = 0;
 	i_rotate = 0;
-	// RED
-	while (i_rotate < game->fov->nbr_ray / 2)
-	{
-		double	angle_2;
-
-		angle_2 = 0;
-		if (game->fov->angle >= 0 && game->fov->angle < 60)
-		{
-			angle_2 = angle + (game->fov->deg * i_rotate);
-			len_vision = tan(deg_to_radian(abs_dble(angle_2))) * game->map->pos_y;
-			if (angle_2 > 0)
-				game->line->x_dest = game->map->pos_x + len_vision;
-			game->line->y_dest = 0;
-		}
-		if (game->fov->angle >= 330 && game->fov->angle < 360)
-		{
-			angle_2 = 360 - angle - (game->fov->deg * i_rotate);
-			len_vision = tan(deg_to_radian(abs_dble(angle_2))) * game->map->pos_y;
-			if (angle_2 > 0)
-				game->line->x_dest = game->map->pos_x - len_vision;
-			else
-				game->line->x_dest = game->map->pos_x + len_vision;
-			game->line->y_dest = 0;
-		}
-		if (game->fov->angle < 330 && game->fov->angle >= 270)
-		{
-			angle_2 = 270 - angle - (game->fov->deg * i_rotate);
-			len_vision = tan(deg_to_radian(abs_dble(angle_2))) * game->map->pos_x;
-			if (angle_2 > 0)
-				game->line->y_dest = game->map->pos_y + len_vision;
-			else
-				game->line->y_dest = game->map->pos_y - len_vision;
-			game->line->x_dest = 0;
-		}
-		if (game->fov->angle >= 60 && game->fov->angle < 150)
-		{
-			angle_2 = 90 - angle - (game->fov->deg * i_rotate);
-			len_vision = tan( deg_to_radian(abs_dble(angle_2)) ) * (game->map->width * game->img_size - game->map->pos_x);
-			if ((angle_2) > 0)
-				game->line->y_dest = game->map->pos_y - len_vision;
-			else
-				game->line->y_dest = game->map->pos_y + len_vision;
-			game->line->x_dest = game->map->width * game->img_size;
-		}
-		if (game->fov->angle >= 150 && game->fov->angle < 240)
-		{
-			angle_2 = 180 - angle - (game->fov->deg * i_rotate);
-			len_vision = tan(deg_to_radian(abs_dble(angle_2))) * (game->map->height * game->img_size - game->map->pos_y);
-			if (angle_2 > 0)
-				game->line->x_dest = game->map->pos_x + len_vision;
-			else
-				game->line->x_dest = game->map->pos_x - len_vision;
-			game->line->y_dest = game->map->height * game->img_size;
-		}
-		if (game->fov->angle >= 240 && game->fov->angle < 270)
-		{
-			angle_2 = 270 - angle - (game->fov->deg * i_rotate);
-			len_vision = tan(deg_to_radian(abs_dble(angle_2))) * game->map->pos_x;
-			if (angle_2 > 0)
-				game->line->y_dest = game->map->pos_y + len_vision;
-			else
-				game->line->y_dest = game->map->pos_y - len_vision;
-			game->line->x_dest = 0;
-		}
-		game->fov->lines_vision[i_rotate] = draw_line_vision(game, get_color(255, 255 / (game->fov->nbr_ray / 2) * ((game->fov->nbr_ray / 2) - i_rotate), 0));
-		game->fov->lines_vision[i_rotate] = abs_flt(cos(deg_to_radian(game->fov->deg * i_rotate))) * game->fov->lines_vision[i_rotate];
-
-		if (game->fov->lines_vision[i_rotate] == 0)
-			game->fov->lines_vision[i_rotate] = 1;
-
-		game->fov->wall_witch[i_rotate][0] = game->line->corr_x;
-		game->fov->wall_witch[i_rotate][1] = game->line->corr_y;
-		game->fov->wall[i_rotate][0] = game->line->corr_x / game->img_size;
-		game->fov->wall[i_rotate][1] = game->line->corr_y / game->img_size;
-		int corr_y = round(game->line->corr_y);
-		int corr_x = round(game->line->corr_x);
-		int s = 0;
-		int e = 0;
-		int w = 0;
-		int n = 0;
-
-		if (game->map->map_org[(corr_y - 1) / game->img_size][corr_x / game->img_size] == '1')
-			s++;
-		if (game->map->map_org[(corr_y + 1) / game->img_size][corr_x / game->img_size] == '1')
-			n++;
-		if (game->map->map_org[(corr_y) / game->img_size][(corr_x + 1) / game->img_size] == '1')
-			w++;
-		if (game->map->map_org[(corr_y) / game->img_size][(corr_x - 1) / game->img_size] == '1')
-			e++;
-
-		if (n > s)
-			game->fov->toggle_vision[i_rotate] = 'N';
-		else if (s > n)
-			game->fov->toggle_vision[i_rotate] = 'S';
-		else if (e > w)
-			game->fov->toggle_vision[i_rotate] = 'E';
-		else if (w > e)
-			game->fov->toggle_vision[i_rotate] = 'W';
-
-		i_rotate++;
-	}
-
-	i_rotate = 1;
-	if (angle > 180)
-		angle = abs_dble(angle - 360);
-	while (i_rotate <= game->fov->nbr_ray / 2)
-	{
-		if (game->fov->angle >= 0 && game->fov->angle < 90)
-		{
-			len_vision = tan(deg_to_radian(abs_dble(angle - (game->fov->deg * i_rotate)))) * game->map->pos_y;
-			if (angle - (game->fov->deg * i_rotate) > 0)
-				game->line->x_dest = game->map->pos_x + len_vision;
-			else
-				game->line->x_dest = game->map->pos_x - len_vision;
-			game->line->y_dest = 0;
-		}
-		if (game->fov->angle >= 90 && game->fov->angle < 180)
-		{
-			len_vision = tan( deg_to_radian(abs_dble(angle - (game->fov->deg * i_rotate) - 90)) ) * (game->map->width * game->img_size - game->map->pos_x);
-			if ((angle - (game->fov->deg * i_rotate)) > 90)
-				game->line->y_dest = game->map->pos_y + len_vision;
-			else
-				game->line->y_dest = game->map->pos_y - len_vision;
-			game->line->x_dest = game->map->width * game->img_size;
-		}
-		if (game->fov->angle >= 180 && game->fov->angle < 270)
-		{
-			len_vision = tan( deg_to_radian(abs_dble(180 - angle - (game->fov->deg * i_rotate))) ) * (game->map->height * game->img_size - game->map->pos_y);
-			if (180 - angle - (game->fov->deg * i_rotate) > 0)
-				game->line->x_dest = game->map->pos_x - len_vision;
-			else
-				game->line->x_dest = game->map->pos_x + len_vision;
-			game->line->y_dest = game->map->height * game->img_size;
-		}
-		if (game->fov->angle >= 270 && game->fov->angle < 360)
-		{
-			len_vision = tan( deg_to_radian(abs_dble(90 - angle - (game->fov->deg * i_rotate))) ) * (game->map->pos_x);
-			if (90 - angle - (game->fov->deg * i_rotate) > 0)
-				game->line->y_dest = game->map->pos_y - len_vision;
-			else
-				game->line->y_dest = game->map->pos_y + len_vision;
-			game->line->x_dest = 0;
-		}
-		game->fov->lines_vision[i_rotate + game->fov->nbr_ray / 2] = draw_line_vision(game, get_color(0, 255 / (game->fov->nbr_ray / 2) * ((game->fov->nbr_ray / 2) - i_rotate), 255));
-		game->fov->lines_vision[i_rotate + game->fov->nbr_ray / 2] = abs_flt(cos(deg_to_radian(game->fov->deg * i_rotate))) * game->fov->lines_vision[i_rotate + game->fov->nbr_ray / 2];
-
-		if (game->fov->lines_vision[i_rotate + game->fov->nbr_ray / 2] == 0)
-			game->fov->lines_vision[i_rotate + game->fov->nbr_ray / 2] = 1;
-
-		game->fov->wall_witch[i_rotate + game->fov->nbr_ray / 2][0] = game->line->corr_x;
-		game->fov->wall[i_rotate + game->fov->nbr_ray / 2][0] = game->line->corr_x / game->img_size;
-
-		game->fov->wall_witch[i_rotate + game->fov->nbr_ray / 2][1] = game->line->corr_y;
-		game->fov->wall[i_rotate + game->fov->nbr_ray / 2][1] = game->line->corr_y / game->img_size;
-
-		int corr_y = round(game->line->corr_y);
-		int corr_x = round(game->line->corr_x);
-		int s = 0;
-		int e = 0;
-		int w = 0;
-		int n = 0;
-
-		if (game->map->map_org[(corr_y - 1) / game->img_size][corr_x / game->img_size] == '1')
-			s++;
-		if (game->map->map_org[(corr_y + 1) / game->img_size][corr_x / game->img_size] == '1')
-			n++;
-		if (game->map->map_org[(corr_y) / game->img_size][(corr_x + 1) / game->img_size] == '1')
-			w++;
-		if (game->map->map_org[(corr_y) / game->img_size][(corr_x - 1) / game->img_size] == '1')
-			e++;
-
-		if (n > s)
-			game->fov->toggle_vision[i_rotate + game->fov->nbr_ray / 2] = 'N';
-		else if (s > n)
-			game->fov->toggle_vision[i_rotate + game->fov->nbr_ray / 2] = 'S';
-		else if (e > w)
-			game->fov->toggle_vision[i_rotate + game->fov->nbr_ray / 2] = 'E';
-		else if (w > e)
-			game->fov->toggle_vision[i_rotate + game->fov->nbr_ray / 2] = 'W';
-		i_rotate++;
-	}
-	int	save_src_x;
-	int	save_src_y;
-
-	save_src_x = game->line->x_src;
-	save_src_y = game->line->y_src;
-	game->line->x_dest = save_x;
-	game->line->y_dest = save_y;
-	last_correct_toggle(game);
-	fill_ceil_floor(game);
-	display_3d(game);
-	game->line->x_dest = save_x;
-	game->line->y_dest = save_y;
-	game->line->x_src = save_src_x;
-	game->line->y_src = save_src_y;
-	mlx_put_image_to_window(game->mlibx, game->window, game->img->mlx_img, 0, 0);
-	printf("\n.....................................\n\n");
-	(void)i_rotate;
-	(void)save;
-	(void)save_2;
-	(void)save_src_x;
-	(void)save_src_y;
+	if (init_display_all(g, key, &len_side) == FAIL)
+		return (FAIL);
+	move_straight(g);
+	rotate_new(g);
+	mid_display_all(g, i_rotate, len_vision);
+	g->display_all_save_src_x = g->line->x_src;
+	g->display_all_save_src_y = g->line->y_src;
+	g->line->x_dest = g->display_all_save_x;
+	g->line->y_dest = g->display_all_save_y;
+	last_correct_toggle(g);
+	fill_ceil_floor(g);
+	display_3d(g);
+	g->line->x_dest = g->display_all_save_x;
+	g->line->y_dest = g->display_all_save_y;
+	g->line->x_src = g->display_all_save_src_x;
+	g->line->y_src = g->display_all_save_src_y;
+	mlx_put_image_to_window(g->mlibx, g->window, g->img->mlx_img, 0, 0);
 	return (SUCCESS);
+}
+
+void	mid_display_all(t_game *game, int i_rotate, int len_vision)
+{
+	game->fov->lines_vision[game->fov->nbr_ray / 2] = draw_line_vision(game);
+	game->fov->wall_witch[game->fov->nbr_ray / 2][0] = game->line->corr_x;
+	game->fov->wall_witch[game->fov->nbr_ray / 2][1] = game->line->corr_y;
+	game->fov->wall[game->fov->nbr_ray / 2][0] \
+	= game->line->corr_x / game->img_size;
+	game->fov->wall[game->fov->nbr_ray / 2][1] \
+	= game->line->corr_y / game->img_size;
+	game->display_all_save_x = game->line->x_dest;
+	game->display_all_save_y = game->line->y_dest;
+	game->display_all_angle = game->fov->angle;
+	game->display_all_angle_2 = 0;
+	display_all_red(game, i_rotate, len_vision);
+	display_all_blue(game, i_rotate, len_vision);
+}
+
+void	set_toggle(t_game *g, int i_rotate)
+{
+	g->map->north = 0;
+	g->map->south = 0;
+	g->map->east = 0;
+	g->map->west = 0;
+	if (g->map->map_org[((int)roundf(g->line->corr_y) - 1) / \
+	g->img_size][(int)roundf(g->line->corr_x) / g->img_size] == '1')
+		g->map->south++;
+	if (g->map->map_org[((int)roundf(g->line->corr_y) + 1) / \
+	g->img_size][(int)roundf(g->line->corr_x) / g->img_size] == '1')
+		g->map->north++;
+	if (g->map->map_org[((int)roundf(g->line->corr_y)) / \
+	g->img_size][((int)roundf(g->line->corr_x) + 1) / g->img_size] == '1')
+		g->map->west++;
+	if (g->map->map_org[((int)roundf(g->line->corr_y)) / \
+	g->img_size][((int)roundf(g->line->corr_x) - 1) / g->img_size] == '1')
+		g->map->east++;
+	if (g->map->north > g->map->south)
+		g->fov->toggle_vision[i_rotate] = 'N';
+	else if (g->map->south > g->map->north)
+		g->fov->toggle_vision[i_rotate] = 'S';
+	else if (g->map->east > g->map->west)
+		g->fov->toggle_vision[i_rotate] = 'E';
+	else if (g->map->west > g->map->east)
+		g->fov->toggle_vision[i_rotate] = 'W';
 }
 
 void	last_correct_toggle(t_game *game)

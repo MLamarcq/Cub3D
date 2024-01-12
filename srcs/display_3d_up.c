@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   display_3d_up.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 15:17:16 by gael              #+#    #+#             */
-/*   Updated: 2023/08/03 10:40:42 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 14:51:31 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,37 @@ void	fill_ceil_floor(t_game *game)
 	int	y;
 	int	x;
 
-	y = (game->map->height * game->img_size) + 4;
+	y = 0;
 	x = 0;
-	while (++y < (game->win_height / 2) + (game->map->height * game->img_size))
+	while (++y < (game->win_height / 2))
 	{
 		x = 0;
 		while (x < game->win_width)
 		{
-			img_pix_put(game, x, y, get_color(10, 177, 255));
+			img_pix_put(game, x, y, get_color(game->map->ceil[0], \
+				game->map->ceil[1], \
+				game->map->ceil[2]));
 			x++;
 		}
 	}
-	y = (game->win_height / 2) + (game->map->height * game->img_size);
-	while (++y < game->win_height + (game->map->height * game->img_size))
+	fill_ceil_floor_2(game);
+}
+
+void	fill_ceil_floor_2(t_game *game)
+{
+	int	y;
+	int	x;
+
+	x = 0;
+	y = (game->win_height / 2);
+	while (++y < game->win_height)
 	{
 		x = 0;
 		while (x < game->win_width)
 		{
-			img_pix_put(game, x, y, get_color(35, 150, 90));
+			img_pix_put(game, x, y, get_color(game->map->floor[0], \
+				game->map->floor[1], \
+				game->map->floor[2]));
 			x++;
 		}
 	}

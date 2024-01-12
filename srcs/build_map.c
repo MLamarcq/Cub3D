@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 09:38:48 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 13:46:04 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 16:44:23 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	skip_empty_line(char **line, int fd)
 		(*line) = gnl(fd);
 	}
 }
+
 void	build_content(t_game *game, char **line, int fd)
 {
 	if (game->map->file_map == NULL)
@@ -60,6 +61,8 @@ void	realloc_lines(t_game *game)
 
 int	create_map(t_game *game, char *line, int fd)
 {
+	if (game->map->ceil == NULL || game->map->floor == NULL)
+		return (printf("wrong ceil floor\n"), free(line), FAIL);
 	game->map->height = 0;
 	skip_empty_line(&line, fd);
 	while (line && line[0] != '\0' && is_empty_line(line) == FAIL)
@@ -83,14 +86,10 @@ int	create_map(t_game *game, char *line, int fd)
 	return (printf("something wrong with map\n"), FAIL);
 }
 
-int	build_map(t_game *game, char **argv)
+int	build_map(t_game *game, char **argv, int count, int fd)
 {
-	int		count;
-	int		fd;
 	char	*line;
 
-	count = 0;
-	fd = -1;
 	if (open_fd(game, &fd, argv) == FAIL)
 		return (FAIL);
 	line = gnl(fd);
@@ -113,5 +112,5 @@ int	build_map(t_game *game, char **argv)
 		free(line);
 		line = gnl(fd);
 	}
-	return (SUCCESS);
+	return (printf("something wrong with map\n"), free(line), FAIL);
 }

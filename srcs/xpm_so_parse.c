@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   xpm_so_parse.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:49:54 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 14:15:27 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/03 17:58:11 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	xpm_so_parse(t_game *game)
 {
-	printf(BACK_GREEN"%s"RESET"\n", game->map->wall_so);
-	xpm_so_read(game, game->map->wall_so);
+	if (xpm_so_read(game, game->map->wall_so) == FAIL)
+		return (FAIL);
 	if (xpm_so_correct(game) == FAIL)
 		return (FAIL);
 	if (xpm_so_read_1line(game) == FAIL)
+		return (FAIL);
+	if (xpm_so_check_wh(game) == FAIL)
 		return (FAIL);
 	return (SUCCESS);
 }

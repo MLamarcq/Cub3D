@@ -2,7 +2,6 @@
 
 
 
-
 ##### Colors #####
 BLACK=\033[0;30m
 RED=\033[0;31m
@@ -13,7 +12,6 @@ PURPLE=\033[0;35m
 CYAN=\033[0;36m
 WHITE=\033[0;37m
 END=\033[0m
-
 
 
 
@@ -31,17 +29,15 @@ BOLD_WHITE=\033[1;37m
 
 
 
-
 ##### Names #####
 NAME	= cub3D
 LIBNAME	= libft.a
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -lreadline -g3 -MMD -MP
+CFLAGS	= -Wall -Werror -Wextra -lreadline -g3 
 SRCDIR	= srcs
 OBJDIR	= objs
 INCDIR	= incs
 LIBDIR	= libft
-
 
 
 
@@ -52,12 +48,13 @@ _SRCS	=	angle_len.c \
 			build_map_utils.c \
 			check_file.c \
 			check_format.c \
-			color_image.c \
 			display_3d_down.c \
 			display_3d_down_utils.c \
 			display_3d_up.c \
 			display_3d_up_utils.c \
+			display_all_blue.c \
 			display_all.c \
+			display_all_red.c \
 			display_all_utils.c \
 			draw_line.c \
 			draw_xpm_down_ea.c \
@@ -65,6 +62,7 @@ _SRCS	=	angle_len.c \
 			draw_xpm_down_so.c \
 			draw_xpm_down_we.c \
 			draw_xpm_ud.c \
+			draw_xpm_ud_utils.c \
 			draw_xpm_up_ea.c \
 			draw_xpm_up_no.c \
 			draw_xpm_up_so.c \
@@ -74,6 +72,7 @@ _SRCS	=	angle_len.c \
 			fov.c \
 			free_all.c \
 			free_parsing.c \
+			free_xpm_2.c \
 			free_xpm.c \
 			init_img.c \
 			key_move.c \
@@ -115,13 +114,11 @@ _SRCS	=	angle_len.c \
 
 
 
-
 SRC            = $(addprefix $(SRCDIR)/, $(_SRCS))
 OBJ            = $(SRC:$(SRCDIR)%.c=$(OBJDIR)%.o)
 HEADER         = $(addprefix $(INCDIR)/, $(NAME).h)
-LIBX           = -L minilibx/ 
+LIBX           = -L minilibx/
 LIBXFLAGS      = -lmlx -lXext -lX11 -lz -lm
-
 
 
 
@@ -137,15 +134,15 @@ $(NAME): $(OBJ) $(HEADER)
 	@echo -e "Baking $(LIBDIR)..."
 	@make -s -C $(LIBDIR)
 	@echo -e "$(GREEN)OK!$(END)"
-	
+
 	@echo -e "Baking $(LIBDIR)..."
 	@make --no-print-directory -C minilibx
 	@echo -e "$(GREEN)OK!$(END)"
-	
+
 	@echo -e "Baking $(NAME)..."
 	@$(CC) -I$(INCDIR) -I$(LIBDIR) -o $@ $^ $(LIBDIR)/$(LIBNAME) $(CFLAGS) $(LIBX) $(LIBXFLAGS)
 	@echo -e "$(GREEN)OK!$(END)"
-	
+
 	@echo -e "$(BOLD_GREEN)$(NAME) READY !$(END)"
 
 clean:
@@ -163,9 +160,6 @@ fclean: clean
 	@echo -e "$(BOLD_GREEN)Everything is clean!$(END)"
 
 re: fclean all
-
--include ${DEPS}
-
 
 
 

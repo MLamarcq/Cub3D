@@ -6,7 +6,7 @@
 /*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:57:52 by gael              #+#    #+#             */
-/*   Updated: 2023/08/03 11:10:31 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 17:58:39 by mael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,27 @@
 
 void	free_xpm(t_game *game)
 {
+	int	i;
+
+	i = -1;
 	if (game->xpm)
 	{
-		free_xpm_no(game);
-		free_xpm_we(game);
-		free_xpm_ea(game);
-		free_xpm_so(game);
+		free_xpm_no(game, i);
+		free_xpm_we(game, i);
+		free_xpm_ea(game, i);
+		free_xpm_so(game, i);
+		free(game->xpm->no_metadata);
+		free(game->xpm->ea_metadata);
+		free(game->xpm->so_metadata);
+		free(game->xpm->we_metadata);
 		free(game->xpm);
 		game->xpm = NULL;
 	}
 }
 
-void	free_xpm_no(t_game *game)
+void	free_xpm_no(t_game *game, int i)
 {
-	int	i;
-
-	i = -1;
-	while (++i < game->xpm->no_tab_start)
+	while (game->xpm->no_colors && ++i < game->xpm->no_tab_start)
 	{
 		if (game->xpm->no_colors[i])
 		{
@@ -55,19 +59,15 @@ void	free_xpm_no(t_game *game)
 	}
 }
 
-void	free_xpm_we(t_game *game)
+void	free_xpm_we(t_game *game, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < game->xpm->we_tab_start)
+	while (game->xpm->we_colors && ++i < game->xpm->we_tab_start)
 	{
 		if (game->xpm->we_colors[i])
 		{
 			free(game->xpm->we_colors[i]);
 			game->xpm->we_colors[i] = NULL;
 		}
-		i++;
 	}
 	if (game->xpm->we_colors)
 	{
@@ -86,19 +86,15 @@ void	free_xpm_we(t_game *game)
 	}
 }
 
-void	free_xpm_ea(t_game *game)
+void	free_xpm_ea(t_game *game, int i)
 {
-	int	i;
-
-	i = 0;
-	while (i < game->xpm->ea_tab_start)
+	while (game->xpm->ea_colors && ++i < game->xpm->ea_tab_start)
 	{
 		if (game->xpm->ea_colors[i])
 		{
 			free(game->xpm->ea_colors[i]);
 			game->xpm->ea_colors[i] = NULL;
 		}
-		i++;
 	}
 	if (game->xpm->ea_colors)
 	{
@@ -117,12 +113,9 @@ void	free_xpm_ea(t_game *game)
 	}
 }
 
-void	free_xpm_so(t_game *game)
+void	free_xpm_so(t_game *game, int i)
 {
-	int	i;
-
-	i = -1;
-	while (++i < game->xpm->so_tab_start)
+	while (game->xpm->so_colors && ++i < game->xpm->so_tab_start)
 	{
 		if (game->xpm->so_colors[i])
 		{

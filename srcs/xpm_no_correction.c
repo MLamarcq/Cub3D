@@ -6,7 +6,7 @@
 /*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 10:03:27 by gael              #+#    #+#             */
-/*   Updated: 2023/08/02 14:23:05 by gael             ###   ########.fr       */
+/*   Updated: 2023/08/02 14:22:49 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	xpm_no_correct(t_game *g)
 		&& g->xpm->no_tab_file[i][1] == '*' \
 		&& g->xpm->no_tab_file[i][ft_strlen(g->xpm->no_tab_file[i]) - 2] == '*' \
 		&& g->xpm->no_tab_file[i][ft_strlen(g->xpm->no_tab_file[i]) - 1] == '/')
-		{
 			n_comm++;
-		}
 		i++;
 	}
 	return (xpm_no_wo_comm(g, n_comm));

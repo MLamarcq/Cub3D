@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   angle_len.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mael <mael@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gael <gael@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 10:44:36 by mael              #+#    #+#             */
-/*   Updated: 2023/08/03 11:04:39 by mael             ###   ########.fr       */
+/*   Updated: 2023/08/03 12:43:12 by gael             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	angle_1(t_game *game, double angle_2, int len_vision)
 		game->line->y_dest = 0;
 	}
 }
+
 void	angle_3(t_game *game, double angle_2, int len_vision)
 {
 	if (game->fov->angle < 330 && game->fov->angle >= 270)
@@ -57,12 +58,14 @@ void	angle_3(t_game *game, double angle_2, int len_vision)
 		game->line->x_dest = game->map->width * game->img_size;
 	}
 }
+
 void	angle_4(t_game *game, double angle_2, int len_vision)
 {
 	if (game->fov->angle >= 150 && game->fov->angle < 240)
 	{
 		angle_2 = 180 - (game->fov->angle);
-		len_vision = tan(deg_to_radian(abs_dble(angle_2))) * (game->map->height * game->img_size - game->map->pos_y);
+		len_vision = tan(deg_to_radian(abs_dble(angle_2))) * \
+		(game->map->height * game->img_size - game->map->pos_y);
 		if (angle_2 > 0)
 			game->line->x_dest = game->map->pos_x + len_vision;
 		else
